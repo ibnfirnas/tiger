@@ -48,8 +48,8 @@ module Tree : TREE = struct
     let rec to_string indent = function
       | Leaf              -> ""
       | Tree (l, k, _, r) ->
-        let left = to_string (margin ^ indent)  l in
-        let right =  to_string (margin ^ indent) r in
+        let left  = to_string (margin ^ indent) l in
+        let right = to_string (margin ^ indent) r in
         sprintf "%s.%s%s\n%s" right indent k left
     in
     to_string margin t
