@@ -24,40 +24,29 @@ module Tree : TREE = struct
 
   let rec insert t (key, value) =
     match t with
-    | Leaf -> Tree (Leaf, key, value, Leaf)
-    | Tree (l, k, v, r) ->
-      if key < k then
-        Tree (insert l (key, v), k, v, r)
-      else if key > k then
-        Tree (l, k, v, insert r (key, value))
-      else
-        Tree (l, key, value, r)
+    | Leaf                           -> Tree (Leaf, key, value, Leaf)
+    | Tree (l, k, v, r) when key < k -> Tree (insert l (key, v), k, v, r)
+    | Tree (l, k, v, r) when key > k -> Tree (l, k, v, insert r (key, value))
+    | Tree (l, k, v, r)              -> Tree (l, key, value, r)
 
   let rec member t key =
     match t with
-    | Leaf -> false
-    | Tree (l, k, _, r) when key = k -> true
-    | Tree (l, k, _, r) ->
-      if key < k then
-        member l key
-      else
-        member r key
+    | Leaf                           -> false
+    | Tree (_, k, _, _) when key = k -> true
+    | Tree (l, k, _, _) when key < k -> member l key
+    | Tree (_, k, _, r)              -> member r key
 
   let rec lookup t key =
     match t with
-    | Leaf -> None
-    | Tree (l, k, v, r) when key = k -> Some v
-    | Tree (l, k, _, r) ->
-      if key < k then
-        lookup l key
-      else
-        lookup r key
+    | Leaf                           -> None
+    | Tree (_, k, v, _) when key = k -> Some v
+    | Tree (l, k, _, _) when key < k -> lookup l key
+    | Tree (_, k, _, r)              -> lookup r key
 
   let to_string t =
     let margin = "   " in
-    let rec to_string indent t =
-      match t with
-      | Leaf -> ""
+    let rec to_string indent = function
+      | Leaf              -> ""
       | Tree (l, k, v, r) ->
         let left = to_string (margin ^ indent)  l in
         let right =  to_string (margin ^ indent) r in
