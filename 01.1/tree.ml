@@ -27,27 +27,27 @@ module Tree : TREE = struct
     | Leaf                           -> Tree (Leaf, key, value, Leaf)
     | Tree (l, k, v, r) when key < k -> Tree (insert l (key, v), k, v, r)
     | Tree (l, k, v, r) when key > k -> Tree (l, k, v, insert r (key, value))
-    | Tree (l, k, v, r)              -> Tree (l, key, value, r)
+    | Tree (l, _, _, r)              -> Tree (l, key, value, r)
 
   let rec member t key =
     match t with
     | Leaf                           -> false
     | Tree (_, k, _, _) when key = k -> true
     | Tree (l, k, _, _) when key < k -> member l key
-    | Tree (_, k, _, r)              -> member r key
+    | Tree (_, _, _, r)              -> member r key
 
   let rec lookup t key =
     match t with
     | Leaf                           -> None
     | Tree (_, k, v, _) when key = k -> Some v
     | Tree (l, k, _, _) when key < k -> lookup l key
-    | Tree (_, k, _, r)              -> lookup r key
+    | Tree (_, _, _, r)              -> lookup r key
 
   let to_string t =
     let margin = "   " in
     let rec to_string indent = function
       | Leaf              -> ""
-      | Tree (l, k, v, r) ->
+      | Tree (l, k, _, r) ->
         let left = to_string (margin ^ indent)  l in
         let right =  to_string (margin ^ indent) r in
         sprintf "%s.%s%s\n%s" right indent k left
