@@ -9,7 +9,7 @@ module type TREE = sig
   val insert : 'a t -> key * 'a -> 'a t
   val member : 'a t -> key -> bool
   val lookup : 'a t -> key -> 'a option
-  val print  : 'a t -> unit
+  val print  : 'a t -> string -> unit
 end
 
 
@@ -43,42 +43,44 @@ module Tree : TREE = struct
     | Tree (l, k, _, _) when key < k -> lookup l key
     | Tree (_, _, _, r)              -> lookup r key
 
-  let to_string t =
-    let margin = "   " in
-    let rec to_string indent = function
-      | Leaf              -> ""
-      | Tree (l, k, _, r) ->
-        let left  = to_string (margin ^ indent) l in
-        let right = to_string (margin ^ indent) r in
-        sprintf "%s.%s%s\n%s" right indent k left
+  let edges t =
+    let rec edges x = function
+      | Leaf              -> []
+      | Tree (l, y, _, r) ->
+        (x, `Node y) :: ((edges (`Node y) l) @ (edges (`Node y) r))
     in
-    to_string margin t
+    edges `Root t
 
-  let print t =
-    print_endline (to_string t)
+  let to_dot t name =
+    let str_of_node = function
+      | `Root -> "ROOT"
+      | `Node x -> x
+    in
+    let rec str_of_edges = function
+      | [] -> ""
+      | (a, b) :: es ->
+        sprintf
+        "  \"%s\" -> \"%s\";\n%s"
+        (str_of_node   a)
+        (str_of_node   b)
+        (str_of_edges es)
+    in
+    sprintf "digraph %s {\n%s};\n" name (str_of_edges (edges t))
+
+  let print t name =
+    print_endline (to_dot t name)
 end
 
 
 let main () =
-  let bar = String.make 80 '-' in
-
   let xs = ["t"; "s"; "p"; "i"; "p"; "f"; "b"; "s"; "t"] in
   let ys = ["a"; "b"; "c"; "d"; "e"; "f"; "g"; "h"; "i"] in
 
   let xt = List.fold_left (fun t x -> Tree.insert t (x, x)) Tree.empty xs in
   let yt = List.fold_left (fun t y -> Tree.insert t (y, y)) Tree.empty ys in
 
-  List.iter print_string xs;
-  print_newline ();
-  print_endline bar;
-  Tree.print xt;
-
-  print_newline ();
-
-  List.iter print_string ys;
-  print_newline ();
-  print_endline bar;
-  Tree.print yt
+  Tree.print xt "X";
+  Tree.print yt "Y"
 
 
 let () = main ()
