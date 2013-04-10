@@ -1,9 +1,36 @@
 { open Printf
 
+  module Map = Map.Make (String)
   module Token = Tiger_token
 
 
+  let keywords =
+    List.fold_left
+    (fun ks (k, t) -> Map.add k t ks)
+    Map.empty
+    [ "array"    , Token.ARRAY
+    ; "break"    , Token.BREAK
+    ; "do"       , Token.DO
+    ; "else"     , Token.ELSE
+    ; "end"      , Token.END
+    ; "for"      , Token.FOR
+    ; "function" , Token.FUNCTION
+    ; "if"       , Token.IF
+    ; "in"       , Token.IN
+    ; "int"      , Token.INT
+    ; "let"      , Token.LET
+    ; "nil"      , Token.NIL
+    ; "of"       , Token.OF
+    ; "string"   , Token.STRING
+    ; "then"     , Token.THEN
+    ; "to"       , Token.TO
+    ; "type"     , Token.TYPE
+    ; "var"      , Token.VAR
+    ; "while"    , Token.WHILE
+    ]
+
   let comment_level = ref 0
+
   let string_buff = Buffer.create 100
 }
 
@@ -45,29 +72,13 @@ rule tokens = parse
   (* String literals *)
   | '"' {string_literal lexbuf}
 
-  (* Keywords *)
-  | "array"    {Token.ARRAY}
-  | "end"      {Token.END}
-  | "in"       {Token.IN}
-  | "int"      {Token.INT}
-  | "let"      {Token.LET}
-  | "of"       {Token.OF}
-  | "type"     {Token.TYPE}
-  | "var"      {Token.VAR}
-  | "break"    {Token.BREAK}
-  | "do"       {Token.DO}
-  | "else"     {Token.ELSE}
-  | "for"      {Token.FOR}
-  | "function" {Token.FUNCTION}
-  | "if"       {Token.IF}
-  | "nil"      {Token.NIL}
-  | "then"     {Token.THEN}
-  | "to"       {Token.TO}
-  | "while"    {Token.WHILE}
-  | "string"   {Token.STRING}
-
   (* Identifiers *)
-  | (['a'-'z' 'A'-'Z']['_' 'a'-'z' 'A'-'Z' '0'-'9']+ as id) {Token.ID id}
+  | (['a'-'z' 'A'-'Z']['_' 'a'-'z' 'A'-'Z' '0'-'9']+ as id)
+  { try
+      Map.find id keywords
+    with Not_found ->
+      Token.ID id
+  }
   | (['a'-'z' 'A'-'Z'] as id) {Token.ID (sprintf "%c" id)}
 
   (* Numbers *)
@@ -79,7 +90,6 @@ rule tokens = parse
   (* Unexpected input *)
   (* TODO: Handle input errors. *)
   | _ {assert false}
-
 
 and string_literal = parse
   | '\\' ('"' as c)
