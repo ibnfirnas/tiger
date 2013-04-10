@@ -83,8 +83,14 @@ rule tokens = parse
   (* Numbers *)
   | (['0'-'9']+ as number) {Token.INT_LITERAL (int_of_string number)}
 
+  (* Track current line number *)
+  | '\n' | '\r' | "\n\r"
+  { Lexing.new_line lexbuf;
+    tokens lexbuf
+  }
+
   (* Eat whitespace *)
-  | [' ' '\t' '\n' '\r']+ {tokens lexbuf}
+  | [' ' '\t']+ {tokens lexbuf}
 
   (* Unexpected input *)
   (* TODO: Handle input errors. *)
