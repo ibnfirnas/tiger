@@ -73,13 +73,12 @@ rule tokens = parse
   | '"' {string_literal lexbuf}
 
   (* Identifiers *)
-  | (['a'-'z' 'A'-'Z']['_' 'a'-'z' 'A'-'Z' '0'-'9']+ as id)
+  | (['a'-'z' 'A'-'Z'](['_' 'a'-'z' 'A'-'Z' '0'-'9']+)? as id)
   { try
       Map.find id keywords
     with Not_found ->
       Token.ID id
   }
-  | (['a'-'z' 'A'-'Z'] as id) {Token.ID (sprintf "%c" id)}
 
   (* Numbers *)
   | (['0'-'9']+ as number) {Token.INT_LITERAL (int_of_string number)}
