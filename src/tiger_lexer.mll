@@ -12,7 +12,7 @@
     { Token.line_num = lexbuf.Lexing.lex_curr_p.Lexing.pos_lnum
     }
 
-  let keywords =
+  let keyword_token_funs =
     List.fold_left
     (fun ks (k, t) -> Map.add k t ks)
     Map.empty
@@ -79,7 +79,7 @@ rule tokens = parse
   (* Identifiers *)
   | (['a'-'z' 'A'-'Z'](['_' 'a'-'z' 'A'-'Z' '0'-'9']+)? as id)
   { try
-      (Map.find id keywords) lexbuf
+      (Map.find id keyword_token_funs) lexbuf
     with Not_found ->
       Token.ID (get_position lexbuf, id)
   }
