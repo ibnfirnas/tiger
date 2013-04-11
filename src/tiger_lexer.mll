@@ -42,6 +42,12 @@
 rule tokens = parse
   | eof {Token.EOF (get_position lexbuf)}
 
+  (* Comments *)
+  | "/*"
+  { incr comment_level;
+    comment lexbuf
+  }
+
   (* Punctuation *)
   | ":=" {Token.ASSIGN    (get_position lexbuf)}
   | "<=" {Token.LE        (get_position lexbuf)}
@@ -66,12 +72,6 @@ rule tokens = parse
   | '{'  {Token.LBRACE    (get_position lexbuf)}
   | '|'  {Token.OR        (get_position lexbuf)}
   | '}'  {Token.RBRACE    (get_position lexbuf)}
-
-  (* Comments *)
-  | "/*"
-  { incr comment_level;
-    comment lexbuf
-  }
 
   (* String literals *)
   | '"' {string_literal lexbuf}
