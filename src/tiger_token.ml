@@ -93,7 +93,7 @@ let to_string t =
   | RPAREN           p       -> str p "RPAREN"
   | SEMICOLON        p       -> str p "SEMICOLON"
   | STRING           p       -> str p "STRING"
-  | STRING_LITERAL   (p, s)  -> str p ("STRING_LITERAL: " ^ s)
+  | STRING_LITERAL   (p, s)  -> str p (sprintf "STRING_LITERAL: \"%s\"" s)
   | THEN             p       -> str p "THEN"
   | TIMES            p       -> str p "TIMES"
   | TO               p       -> str p "TO"
