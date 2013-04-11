@@ -52,7 +52,7 @@ type t = AND            of position
        | WHILE          of position
 
 let to_string t =
-  let str p str = sprintf "%0.2d -> %s" p.line_num str in
+  let str p str = sprintf "Line: %0.2d -> Token: %s" p.line_num str in
   match t with
   | AND              p       -> str p "AND"
   | ARRAY            p       -> str p "ARRAY"
