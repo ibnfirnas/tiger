@@ -10,7 +10,7 @@ let main () =
 
   let rec read () =
     match Tiger_lexer.tokens lexbuf with
-    | Token.EOF ->
+    | Token.EOF _ ->
       ()
     | token ->
       print_endline (Token.to_string token);
