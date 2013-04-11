@@ -1,7 +1,9 @@
 open Printf
 
 
-type position = { line_num : int
+type position = { line        : int
+                ; column_from : int
+                ; column_to   : int
                 }
 
 type t = AND            of position
@@ -52,7 +54,14 @@ type t = AND            of position
        | WHILE          of position
 
 let to_string t =
-  let str p str = sprintf "Line: %0.2d -> Token: %s" p.line_num str in
+  let str p str =
+    sprintf
+    "Line: %0.2d, Column From: %0.2d, Column To: %0.2d -> Token: %s"
+    p.line
+    p.column_from
+    p.column_to
+    str
+  in
   match t with
   | AND              p       -> str p "AND"
   | ARRAY            p       -> str p "ARRAY"

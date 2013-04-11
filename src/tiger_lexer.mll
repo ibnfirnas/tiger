@@ -10,8 +10,17 @@
   let string_buff = Buffer.create 100
 
   let get_position lexbuf =
-    { Token.line_num = lexbuf.Lex.lex_curr_p.Lex.pos_lnum
+    let abs_line_start = lexbuf.Lex.lex_start_p.Lex.pos_bol in
+    let abs_token_start = lexbuf.Lex.lex_start_p.Lex.pos_cnum in
+    let abs_current = lexbuf.Lex.lex_curr_p.Lex.pos_cnum in
+    let rel_token_start = abs_token_start - abs_line_start in
+    let rel_current = abs_current - abs_line_start in
+
+    { Token.line        = lexbuf.Lex.lex_curr_p.Lex.pos_lnum
+    ; Token.column_from = rel_token_start
+    ; Token.column_to   = rel_current
     }
+
 
   let keyword_token_funs =
     List.fold_left
