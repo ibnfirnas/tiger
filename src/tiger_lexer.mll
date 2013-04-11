@@ -1,5 +1,6 @@
 { open Printf
 
+  module Lex = Lexing
   module Map = Map.Make (String)
   module Token = Tiger_token
 
@@ -9,7 +10,7 @@
   let string_buff = Buffer.create 100
 
   let get_position lexbuf =
-    { Token.line_num = lexbuf.Lexing.lex_curr_p.Lexing.pos_lnum
+    { Token.line_num = lexbuf.Lex.lex_curr_p.Lex.pos_lnum
     }
 
   let keyword_token_funs =
@@ -90,7 +91,7 @@ rule tokens = parse
 
   (* Track current line number *)
   | '\n' | '\r' | "\n\r"
-  { Lexing.new_line lexbuf;
+  { Lex.new_line lexbuf;
     tokens lexbuf
   }
 
