@@ -1,7 +1,8 @@
 open Printf
 
 module Lex = Lexing
-module Debug = Tiger_debug
+
+module Debug  = Tiger_debug
 module Parser = Tiger_parser
 
 

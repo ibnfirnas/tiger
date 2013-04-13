@@ -2,7 +2,7 @@ open Printf
 
 
 module Location = Tiger_location
-module Parser = Tiger_parser
+module Parser   = Tiger_parser
 
 
 let string_of_token =

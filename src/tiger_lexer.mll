@@ -2,9 +2,9 @@
 
   module Map = Map.Make (String)
 
-  module Debug = Tiger_debug
+  module Debug    = Tiger_debug
   module Location = Tiger_location
-  module Parser = Tiger_parser
+  module Parser   = Tiger_parser
 
 
   let comment_level = ref 0
