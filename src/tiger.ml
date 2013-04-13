@@ -1,7 +1,8 @@
 open Printf
 
 module Lex = Lexing
-module Token = Tiger_token
+module Debug = Tiger_debug
+module Parser = Tiger_parser
 
 
 let main () =
@@ -11,10 +12,10 @@ let main () =
 
   let rec read () =
     match Tiger_lexer.tokens lexbuf with
-    | Token.EOF _ ->
+    | Parser.EOF _ ->
       ()
     | token ->
-      print_endline (Token.to_string token);
+      print_endline (Debug.string_of_token token);
       read ()
   in
 
