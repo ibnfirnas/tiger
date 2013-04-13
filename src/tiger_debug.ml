@@ -6,58 +6,58 @@ module Parser = Tiger_parser
 
 
 let string_of_token =
-  let str p str =
+  let str l str =
     sprintf
     "Line: %0.2d, Column From: %0.2d, Column To: %0.2d -> Token: %s"
-    p.Location.line
-    p.Location.column_from
-    p.Location.column_to
+    l.Location.line
+    l.Location.column_from
+    l.Location.column_to
     str
   in
   function
-  | Parser.AND              p       -> str p "AND"
-  | Parser.ARRAY            p       -> str p "ARRAY"
-  | Parser.ASSIGN           p       -> str p "ASSIGN"
-  | Parser.BREAK            p       -> str p "BREAK"
-  | Parser.COLON            p       -> str p "COLON"
-  | Parser.COMMA            p       -> str p "COMMA"
-  | Parser.DIVIDE           p       -> str p "DIVIDE"
-  | Parser.DO               p       -> str p "DO"
-  | Parser.DOT              p       -> str p "DOT"
-  | Parser.ELSE             p       -> str p "ELSE"
-  | Parser.END              p       -> str p "END"
-  | Parser.EOF              p       -> str p "EOF"
-  | Parser.EQ               p       -> str p "EQ"
-  | Parser.FOR              p       -> str p "FOR"
-  | Parser.FUNCTION         p       -> str p "FUNCTION"
-  | Parser.GE               p       -> str p "GE"
-  | Parser.GT               p       -> str p "GT"
-  | Parser.ID               (p, id) -> str p ("ID: " ^ id)
-  | Parser.IF               p       -> str p "IF"
-  | Parser.IN               p       -> str p "IN"
-  | Parser.INT              p       -> str p "INT"
-  | Parser.LBRACE           p       -> str p "LBRACE"
-  | Parser.LBRACK           p       -> str p "LBRACK"
-  | Parser.LE               p       -> str p "LE"
-  | Parser.LET              p       -> str p "LET"
-  | Parser.LPAREN           p       -> str p "LPAREN"
-  | Parser.LT               p       -> str p "LT"
-  | Parser.MINUS            p       -> str p "MINUS"
-  | Parser.NEQ              p       -> str p "NEQ"
-  | Parser.NIL              p       -> str p "NIL"
-  | Parser.INT_LITERAL      (p, n)  -> str p ("INT_LITERAL: " ^ (string_of_int n))
-  | Parser.OF               p       -> str p "OF"
-  | Parser.OR               p       -> str p "OR"
-  | Parser.PLUS             p       -> str p "PLUS"
-  | Parser.RBRACE           p       -> str p "RBRACE"
-  | Parser.RBRACK           p       -> str p "RBRACK"
-  | Parser.RPAREN           p       -> str p "RPAREN"
-  | Parser.SEMICOLON        p       -> str p "SEMICOLON"
-  | Parser.STRING           p       -> str p "STRING"
-  | Parser.STRING_LITERAL   (p, s)  -> str p (sprintf "STRING_LITERAL: \"%s\"" s)
-  | Parser.THEN             p       -> str p "THEN"
-  | Parser.TIMES            p       -> str p "TIMES"
-  | Parser.TO               p       -> str p "TO"
-  | Parser.TYPE             p       -> str p "TYPE"
-  | Parser.VAR              p       -> str p "VAR"
-  | Parser.WHILE            p       -> str p "WHILE"
+  | Parser.AND              l       -> str l "AND"
+  | Parser.ARRAY            l       -> str l "ARRAY"
+  | Parser.ASSIGN           l       -> str l "ASSIGN"
+  | Parser.BREAK            l       -> str l "BREAK"
+  | Parser.COLON            l       -> str l "COLON"
+  | Parser.COMMA            l       -> str l "COMMA"
+  | Parser.DIVIDE           l       -> str l "DIVIDE"
+  | Parser.DO               l       -> str l "DO"
+  | Parser.DOT              l       -> str l "DOT"
+  | Parser.ELSE             l       -> str l "ELSE"
+  | Parser.END              l       -> str l "END"
+  | Parser.EOF              l       -> str l "EOF"
+  | Parser.EQ               l       -> str l "EQ"
+  | Parser.FOR              l       -> str l "FOR"
+  | Parser.FUNCTION         l       -> str l "FUNCTION"
+  | Parser.GE               l       -> str l "GE"
+  | Parser.GT               l       -> str l "GT"
+  | Parser.ID               (l, id) -> str l ("ID: " ^ id)
+  | Parser.IF               l       -> str l "IF"
+  | Parser.IN               l       -> str l "IN"
+  | Parser.INT              l       -> str l "INT"
+  | Parser.LBRACE           l       -> str l "LBRACE"
+  | Parser.LBRACK           l       -> str l "LBRACK"
+  | Parser.LE               l       -> str l "LE"
+  | Parser.LET              l       -> str l "LET"
+  | Parser.LPAREN           l       -> str l "LPAREN"
+  | Parser.LT               l       -> str l "LT"
+  | Parser.MINUS            l       -> str l "MINUS"
+  | Parser.NEQ              l       -> str l "NEQ"
+  | Parser.NIL              l       -> str l "NIL"
+  | Parser.INT_LITERAL      (l, n)  -> str l ("INT_LITERAL: " ^ (string_of_int n))
+  | Parser.OF               l       -> str l "OF"
+  | Parser.OR               l       -> str l "OR"
+  | Parser.PLUS             l       -> str l "PLUS"
+  | Parser.RBRACE           l       -> str l "RBRACE"
+  | Parser.RBRACK           l       -> str l "RBRACK"
+  | Parser.RPAREN           l       -> str l "RPAREN"
+  | Parser.SEMICOLON        l       -> str l "SEMICOLON"
+  | Parser.STRING           l       -> str l "STRING"
+  | Parser.STRING_LITERAL   (l, s)  -> str l (sprintf "STRING_LITERAL: \"%s\"" s)
+  | Parser.THEN             l       -> str l "THEN"
+  | Parser.TIMES            l       -> str l "TIMES"
+  | Parser.TO               l       -> str l "TO"
+  | Parser.TYPE             l       -> str l "TYPE"
+  | Parser.VAR              l       -> str l "VAR"
+  | Parser.WHILE            l       -> str l "WHILE"

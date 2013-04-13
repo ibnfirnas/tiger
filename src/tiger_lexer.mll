@@ -12,7 +12,7 @@
 
   let string_buff = Buffer.create 100
 
-  let get_position lexbuf =
+  let get_location lexbuf =
     let abs_line_start = lexbuf.Lex.lex_start_p.Lex.pos_bol in
     let abs_token_start = lexbuf.Lex.lex_start_p.Lex.pos_cnum in
     let abs_current = lexbuf.Lex.lex_curr_p.Lex.pos_cnum in
@@ -29,31 +29,31 @@
     List.fold_left
     (fun ks (k, t) -> Map.add k t ks)
     Map.empty
-    [ "array"    , (fun lexbuf -> Parser.ARRAY    (get_position lexbuf))
-    ; "break"    , (fun lexbuf -> Parser.BREAK    (get_position lexbuf))
-    ; "do"       , (fun lexbuf -> Parser.DO       (get_position lexbuf))
-    ; "else"     , (fun lexbuf -> Parser.ELSE     (get_position lexbuf))
-    ; "end"      , (fun lexbuf -> Parser.END      (get_position lexbuf))
-    ; "for"      , (fun lexbuf -> Parser.FOR      (get_position lexbuf))
-    ; "function" , (fun lexbuf -> Parser.FUNCTION (get_position lexbuf))
-    ; "if"       , (fun lexbuf -> Parser.IF       (get_position lexbuf))
-    ; "in"       , (fun lexbuf -> Parser.IN       (get_position lexbuf))
-    ; "int"      , (fun lexbuf -> Parser.INT      (get_position lexbuf))
-    ; "let"      , (fun lexbuf -> Parser.LET      (get_position lexbuf))
-    ; "nil"      , (fun lexbuf -> Parser.NIL      (get_position lexbuf))
-    ; "of"       , (fun lexbuf -> Parser.OF       (get_position lexbuf))
-    ; "string"   , (fun lexbuf -> Parser.STRING   (get_position lexbuf))
-    ; "then"     , (fun lexbuf -> Parser.THEN     (get_position lexbuf))
-    ; "to"       , (fun lexbuf -> Parser.TO       (get_position lexbuf))
-    ; "type"     , (fun lexbuf -> Parser.TYPE     (get_position lexbuf))
-    ; "var"      , (fun lexbuf -> Parser.VAR      (get_position lexbuf))
-    ; "while"    , (fun lexbuf -> Parser.WHILE    (get_position lexbuf))
+    [ "array"    , (fun lexbuf -> Parser.ARRAY    (get_location lexbuf))
+    ; "break"    , (fun lexbuf -> Parser.BREAK    (get_location lexbuf))
+    ; "do"       , (fun lexbuf -> Parser.DO       (get_location lexbuf))
+    ; "else"     , (fun lexbuf -> Parser.ELSE     (get_location lexbuf))
+    ; "end"      , (fun lexbuf -> Parser.END      (get_location lexbuf))
+    ; "for"      , (fun lexbuf -> Parser.FOR      (get_location lexbuf))
+    ; "function" , (fun lexbuf -> Parser.FUNCTION (get_location lexbuf))
+    ; "if"       , (fun lexbuf -> Parser.IF       (get_location lexbuf))
+    ; "in"       , (fun lexbuf -> Parser.IN       (get_location lexbuf))
+    ; "int"      , (fun lexbuf -> Parser.INT      (get_location lexbuf))
+    ; "let"      , (fun lexbuf -> Parser.LET      (get_location lexbuf))
+    ; "nil"      , (fun lexbuf -> Parser.NIL      (get_location lexbuf))
+    ; "of"       , (fun lexbuf -> Parser.OF       (get_location lexbuf))
+    ; "string"   , (fun lexbuf -> Parser.STRING   (get_location lexbuf))
+    ; "then"     , (fun lexbuf -> Parser.THEN     (get_location lexbuf))
+    ; "to"       , (fun lexbuf -> Parser.TO       (get_location lexbuf))
+    ; "type"     , (fun lexbuf -> Parser.TYPE     (get_location lexbuf))
+    ; "var"      , (fun lexbuf -> Parser.VAR      (get_location lexbuf))
+    ; "while"    , (fun lexbuf -> Parser.WHILE    (get_location lexbuf))
     ]
 }
 
 
 rule tokens = parse
-  | eof {Parser.EOF (get_position lexbuf)}
+  | eof {Parser.EOF (get_location lexbuf)}
 
   (* Comments *)
   | "/*"
@@ -62,29 +62,29 @@ rule tokens = parse
   }
 
   (* Punctuation *)
-  | ":=" {Parser.ASSIGN    (get_position lexbuf)}
-  | "<=" {Parser.LE        (get_position lexbuf)}
-  | "<>" {Parser.NEQ       (get_position lexbuf)}
-  | ">=" {Parser.GE        (get_position lexbuf)}
-  | '&'  {Parser.AND       (get_position lexbuf)}
-  | '('  {Parser.LPAREN    (get_position lexbuf)}
-  | ')'  {Parser.RPAREN    (get_position lexbuf)}
-  | '*'  {Parser.TIMES     (get_position lexbuf)}
-  | '+'  {Parser.PLUS      (get_position lexbuf)}
-  | ','  {Parser.COMMA     (get_position lexbuf)}
-  | '-'  {Parser.MINUS     (get_position lexbuf)}
-  | '.'  {Parser.DOT       (get_position lexbuf)}
-  | '/'  {Parser.DIVIDE    (get_position lexbuf)}
-  | ':'  {Parser.COLON     (get_position lexbuf)}
-  | ';'  {Parser.SEMICOLON (get_position lexbuf)}
-  | '<'  {Parser.LT        (get_position lexbuf)}
-  | '='  {Parser.EQ        (get_position lexbuf)}
-  | '>'  {Parser.GT        (get_position lexbuf)}
-  | '['  {Parser.LBRACK    (get_position lexbuf)}
-  | ']'  {Parser.RBRACK    (get_position lexbuf)}
-  | '{'  {Parser.LBRACE    (get_position lexbuf)}
-  | '|'  {Parser.OR        (get_position lexbuf)}
-  | '}'  {Parser.RBRACE    (get_position lexbuf)}
+  | ":=" {Parser.ASSIGN    (get_location lexbuf)}
+  | "<=" {Parser.LE        (get_location lexbuf)}
+  | "<>" {Parser.NEQ       (get_location lexbuf)}
+  | ">=" {Parser.GE        (get_location lexbuf)}
+  | '&'  {Parser.AND       (get_location lexbuf)}
+  | '('  {Parser.LPAREN    (get_location lexbuf)}
+  | ')'  {Parser.RPAREN    (get_location lexbuf)}
+  | '*'  {Parser.TIMES     (get_location lexbuf)}
+  | '+'  {Parser.PLUS      (get_location lexbuf)}
+  | ','  {Parser.COMMA     (get_location lexbuf)}
+  | '-'  {Parser.MINUS     (get_location lexbuf)}
+  | '.'  {Parser.DOT       (get_location lexbuf)}
+  | '/'  {Parser.DIVIDE    (get_location lexbuf)}
+  | ':'  {Parser.COLON     (get_location lexbuf)}
+  | ';'  {Parser.SEMICOLON (get_location lexbuf)}
+  | '<'  {Parser.LT        (get_location lexbuf)}
+  | '='  {Parser.EQ        (get_location lexbuf)}
+  | '>'  {Parser.GT        (get_location lexbuf)}
+  | '['  {Parser.LBRACK    (get_location lexbuf)}
+  | ']'  {Parser.RBRACK    (get_location lexbuf)}
+  | '{'  {Parser.LBRACE    (get_location lexbuf)}
+  | '|'  {Parser.OR        (get_location lexbuf)}
+  | '}'  {Parser.RBRACE    (get_location lexbuf)}
 
   (* String literals *)
   | '"' {string_literal lexbuf}
@@ -94,12 +94,12 @@ rule tokens = parse
   { try
       (Map.find id keyword_token_funs) lexbuf
     with Not_found ->
-      Parser.ID (get_position lexbuf, id)
+      Parser.ID (get_location lexbuf, id)
   }
 
   (* Numbers *)
   | (['0'-'9']+ as number)
-  {Parser.INT_LITERAL (get_position lexbuf, (int_of_string number))}
+  {Parser.INT_LITERAL (get_location lexbuf, (int_of_string number))}
 
   (* Track current line number *)
   | '\n' | '\r' | "\n\r"
@@ -123,7 +123,7 @@ and string_literal = parse
   | '"'
   { let str = Buffer.contents string_buff in
     Buffer.reset string_buff;
-    Parser.STRING_LITERAL (get_position lexbuf, str)
+    Parser.STRING_LITERAL (get_location lexbuf, str)
   }
 
   | (_ as c)
@@ -132,7 +132,7 @@ and string_literal = parse
   }
 
 and comment = parse
-  | eof {Parser.EOF (get_position lexbuf)}
+  | eof {Parser.EOF (get_location lexbuf)}
 
   | "/*"
   { incr comment_level;
