@@ -1,5 +1,5 @@
 build:
-	@ocamlbuild src/tiger.native
+	@ocamlbuild -use-menhir src/tiger.native
 
 
 clean:
