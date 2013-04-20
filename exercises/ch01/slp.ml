@@ -4,7 +4,7 @@ open Printf
 module type TABLE = sig
   type t
 
-  val create : unit -> t
+  val empty  : t
   val lookup : t    -> string       -> int option
   val update : t    -> string * int -> t
   val print  : t    -> unit
@@ -13,8 +13,7 @@ end
 module Table : TABLE = struct
   type t = (string * int) list
 
-  let create () =
-    []
+  let empty = []
 
   let rec lookup t k =
     match t with
@@ -108,7 +107,7 @@ let interp (stm : stm) : unit =
       let v = (fun_of_op op) a b in
       v, t
   in
-  let t = interp_stm stm (Table.create ()) in
+  let t = interp_stm stm Table.empty in
   print_endline bar;
   Table.print t
 
