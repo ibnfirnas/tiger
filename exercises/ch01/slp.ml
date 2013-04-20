@@ -5,9 +5,9 @@ module type TABLE = sig
   type t
 
   val empty  : t
-  val lookup : t    -> string       -> int option
-  val update : t    -> string * int -> t
-  val print  : t    -> unit
+  val lookup : t -> string       -> int option
+  val update : t -> string * int -> t
+  val print  : t -> unit
 end
 
 module Table : TABLE = struct
@@ -47,24 +47,24 @@ let bar = String.make 80 '-'
 
 
 let fun_of_op = function
-  | Plus  -> (+)
-  | Minus -> (-)
+  | Plus  -> ( + )
+  | Minus -> ( - )
   | Times -> ( * )
-  | Div   -> (/)
+  | Div   -> ( / )
 
 
 let maxargs (stm : stm) : int =
   let rec eval_stm = function
-    | CompoundStm (a, b) -> (eval_stm a) @ (eval_stm b)
+    | CompoundStm (a, b)  -> (eval_stm a) @ (eval_stm b)
     | AssignStm (id, exp) -> eval_exp exp
     | PrintStm exps ->
       let n = List.length exps in
       n :: (List.fold_left (fun acc e -> (eval_exp e) @ acc) [] exps)
   and eval_exp = function
-    | IdExp _ -> []
-    | NumExp _ -> []
+    | IdExp _            -> []
+    | NumExp _           -> []
     | EseqExp (stm, exp) -> (eval_stm stm) @ (eval_exp exp)
-    | OpExp (a, _, b) -> (eval_exp a) @ (eval_exp b)
+    | OpExp (a, _, b)    -> (eval_exp a) @ (eval_exp b)
   in
   List.fold_left max 0 (eval_stm stm)
 
