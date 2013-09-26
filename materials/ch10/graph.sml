@@ -13,9 +13,9 @@ struct
     | isBogus _ = false
 
   structure A = DynamicArrayFn(struct open Array
-				    type elem = noderep
-				    type vector = noderep vector
-				    type array = noderep array
+                    type elem = noderep
+                    type vector = noderep vector
+                    type array = noderep array
                              end)
 
   type graph = A.array
@@ -29,16 +29,16 @@ struct
 
   fun nodes g = let val b = A.bound g
                     fun f i = if isBogus( A.sub(g,i)) then nil
-			           else (g,i)::f(i+1)
-		 in f 0			     
+                       else (g,i)::f(i+1)
+         in f 0
                 end
 
-  fun succ(g,i) = let val NODE{succ=s,...} = A.sub(g,i) 
-		   in map (augment g) s 
-		  end
+  fun succ(g,i) = let val NODE{succ=s,...} = A.sub(g,i)
+           in map (augment g) s
+          end
   fun pred(g,i) = let val NODE{pred=p,...} = A.sub(g,i)
-                     in map (augment g) p 
-		  end
+                     in map (augment g) p
+          end
   fun adj gi = pred gi @ succ gi
 
   fun newNode g = (* binary search for unused node *)
@@ -58,7 +58,7 @@ struct
   fun delete(i,j::rest) = if i=j then rest else j::delete(i,rest)
     | delete(_,nil) = raise GraphEdge
 
-  fun diddle_edge change {from=(g:graph, i),to=(g':graph, j)} = 
+  fun diddle_edge change {from=(g:graph, i),to=(g':graph, j)} =
       let val _ = check(g,g')
           val NODE{succ=si,pred=pi} = A.sub(g,i)
           val _ = A.update(g,i,NODE{succ=change(j,si),pred=pi})
@@ -71,10 +71,9 @@ struct
   val rm_edge = diddle_edge delete
 
   structure Table = IntMapTable(type key = node
-				fun getInt(g,n) = n)
+                fun getInt(g,n) = n)
 
 
   fun nodename(g,i:int) = "n" ^ Int.toString(i)
 
 end
-
