@@ -14,30 +14,37 @@
   let location =
     Location.of_lexbuf
 
-  let keyword_token_funs =
-    List.fold_left
-    (fun ks (k, t) -> Map.add k t ks)
-    Map.empty
-    [ "array"    , (fun lb -> Parser.ARRAY    (location lb))
-    ; "break"    , (fun lb -> Parser.BREAK    (location lb))
-    ; "do"       , (fun lb -> Parser.DO       (location lb))
-    ; "else"     , (fun lb -> Parser.ELSE     (location lb))
-    ; "end"      , (fun lb -> Parser.END      (location lb))
-    ; "for"      , (fun lb -> Parser.FOR      (location lb))
-    ; "function" , (fun lb -> Parser.FUNCTION (location lb))
-    ; "if"       , (fun lb -> Parser.IF       (location lb))
-    ; "in"       , (fun lb -> Parser.IN       (location lb))
-    ; "int"      , (fun lb -> Parser.INT      (location lb))
-    ; "let"      , (fun lb -> Parser.LET      (location lb))
-    ; "nil"      , (fun lb -> Parser.NIL      (location lb))
-    ; "of"       , (fun lb -> Parser.OF       (location lb))
-    ; "string"   , (fun lb -> Parser.STRING   (location lb))
-    ; "then"     , (fun lb -> Parser.THEN     (location lb))
-    ; "to"       , (fun lb -> Parser.TO       (location lb))
-    ; "type"     , (fun lb -> Parser.TYPE     (location lb))
-    ; "var"      , (fun lb -> Parser.VAR      (location lb))
-    ; "while"    , (fun lb -> Parser.WHILE    (location lb))
-    ]
+  let find_keyword_token =
+    let keyword_table =
+      List.fold_left
+      (fun ks (k, t) -> Map.add k t ks)
+      Map.empty
+      [ "array"    , (fun lb -> Parser.ARRAY    (location lb))
+      ; "break"    , (fun lb -> Parser.BREAK    (location lb))
+      ; "do"       , (fun lb -> Parser.DO       (location lb))
+      ; "else"     , (fun lb -> Parser.ELSE     (location lb))
+      ; "end"      , (fun lb -> Parser.END      (location lb))
+      ; "for"      , (fun lb -> Parser.FOR      (location lb))
+      ; "function" , (fun lb -> Parser.FUNCTION (location lb))
+      ; "if"       , (fun lb -> Parser.IF       (location lb))
+      ; "in"       , (fun lb -> Parser.IN       (location lb))
+      ; "int"      , (fun lb -> Parser.INT      (location lb))
+      ; "let"      , (fun lb -> Parser.LET      (location lb))
+      ; "nil"      , (fun lb -> Parser.NIL      (location lb))
+      ; "of"       , (fun lb -> Parser.OF       (location lb))
+      ; "string"   , (fun lb -> Parser.STRING   (location lb))
+      ; "then"     , (fun lb -> Parser.THEN     (location lb))
+      ; "to"       , (fun lb -> Parser.TO       (location lb))
+      ; "type"     , (fun lb -> Parser.TYPE     (location lb))
+      ; "var"      , (fun lb -> Parser.VAR      (location lb))
+      ; "while"    , (fun lb -> Parser.WHILE    (location lb))
+      ]
+    in
+    fun ~id ~lexbuf ->
+      try
+        Some ((Map.find id keyword_table) lexbuf)
+      with Not_found ->
+        None
 }
 
 
@@ -80,10 +87,9 @@ rule tokens = parse
 
   (* Identifiers *)
   | (['a'-'z' 'A'-'Z'](['_' 'a'-'z' 'A'-'Z' '0'-'9']+)? as id)
-  { try
-      (Map.find id keyword_token_funs) lexbuf
-    with Not_found ->
-      Parser.ID (location lexbuf, id)
+  { match find_keyword_token ~id ~lexbuf with
+    | Some keyword_token -> keyword_token
+    | None               -> Parser.ID (location lexbuf, id)
   }
 
   (* Numbers *)
